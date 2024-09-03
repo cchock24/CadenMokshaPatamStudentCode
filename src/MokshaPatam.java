@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Objects;
+
 /**
  * Moksha Patam
  * A puzzle created by Zach Blick
@@ -86,6 +89,21 @@ public class MokshaPatam {
             }
         }
         return false;
+    }
+
+    //Returns an Array of Ladders Skipped
+    public int[] skipped(int[][]ladders, int position, int distance){
+        ArrayList<Integer> skipped = new ArrayList<Integer>();
+        for(int i = 0; i < ladders.length; i++){
+            if(ladders[i][0] < position + distance && ladders[i][0] > position){
+                skipped.add(i);
+            }
+        }
+        int[] skips = new int[skipped.size()];
+        for(int i = 0; i < skipped.size(); i++){
+            skips[i] = skipped.get(i);
+        }
+        return skips;
     }
 
 }
