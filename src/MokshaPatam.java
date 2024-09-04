@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Queue;
 
 /**
  * Moksha Patam
@@ -23,15 +25,95 @@ public class MokshaPatam {
     // 3) Check if Ladder is Worth it (Distance per Moves and what Ladders Missing)
     // 4) Repeat Until End
     public static int fewestMoves(int boardsize, int[][] ladders, int[][] snakes) {
+       // Set Up Board
         int position = 0;
-        while(position != 100){
+        // ArrayList of All Snake Locations
+        ArrayList<Integer> snake1 = new ArrayList<Integer>();
+        //ArrayList of All Snake Destinations
+        ArrayList<Integer> snake2 = new ArrayList<Integer>();
+        // ArrayList of All Ladder Locations
+        ArrayList<Integer> ladder1 = new ArrayList<Integer>();
+        // ArrayList of All Ladder Destinations
+        ArrayList<Integer> ladder2 = new ArrayList<Integer>();
+        for(int i = 0; i < ladders.length; i++){
+            ladder1.add(ladders[i][0]);
+            ladder2.add(ladders[i][1]);
+            }
 
+        for(int i = 0; i < ladders.length; i++) {
+            ladder1.add(ladders[i][0]);
+            ladder2.add(ladders[i][1]);
         }
 
+        for(int i = 0; i < snakes.length; i++) {
+            snake1.add(ladders[i][0]);
+            snake2.add(ladders[i][1]);
+        }
+        // Initialize a Board of Squares
+        Square[] board = new Square[boardsize];
+        for(int i = 0; i < boardsize; i++){
+            // Is Ladder
+            for(int x: ladder1){
+                if(x == i){
+                    board[i] = new Square(true,false,i, ladder2.get(i));
+                }
+            }
+            // Is Snake
+            for(int x: snake1){
+                if(x == i){
+                    board[i] = new Square(false,true,i, snake2.get(i));
+                }
+            }
+            // Is Normal Space
+            board[i] = new Square(i);
+        }
+        BFS(0,board);
 
-
-        return 0;
+        return board[boardsize-1].getVisited();
     }
+
+    public static int BFS(int position, Square[] board){
+        // Make Queue
+        Queue<Square> GameSolver = new LinkedList<Square>();
+        Square current = board[position];
+        int turns = 0;
+        while(position != 100){
+            //Determine if Turns Resets or Not
+            if(){
+
+            }
+            else{
+
+            }
+            if(current.isLadder){
+                current = board[current.getTransport()];
+            }
+            if(current.isSnake){
+                current = board[current.getTransport()];
+            }
+
+            position = current.getNumber();
+            // Need to Determine When to Reset Turns
+            current.setVisited(turns);
+            //Adds Valid Squares to Queue
+            for(int i = 1; i < 7; i++){
+                if((position + i) < 100){
+                    if(board[position+i].getVisited() > turns){
+                        GameSolver.add(board[position+i]);
+                    }
+                }
+            }
+            current = GameSolver.remove();
+        }
+    }
+
+
+
+
+
+
+
+
 
     // Find the Biggest Ladder
     public int findLargerLadder(int[][] ladders){
