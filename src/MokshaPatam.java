@@ -35,158 +35,69 @@ public class MokshaPatam {
         ArrayList<Integer> ladder1 = new ArrayList<Integer>();
         // ArrayList of All Ladder Destinations
         ArrayList<Integer> ladder2 = new ArrayList<Integer>();
+        //
         for(int i = 0; i < ladders.length; i++){
             ladder1.add(ladders[i][0]);
             ladder2.add(ladders[i][1]);
             }
-
-        for(int i = 0; i < ladders.length; i++) {
-            ladder1.add(ladders[i][0]);
-            ladder2.add(ladders[i][1]);
-        }
-
         for(int i = 0; i < snakes.length; i++) {
-            snake1.add(ladders[i][0]);
-            snake2.add(ladders[i][1]);
+            snake1.add(snakes[i][0]);
+            snake2.add(snakes[i][1]);
         }
         // Initialize a Board of Squares
-        Square[] board = new Square[boardsize];
-        for(int i = 0; i < boardsize; i++){
+        Square[] board = new Square[boardsize+1];
+        int numb = 0;
+        for(int i = 1; i < boardsize+1; i++){
+            numb = 0;
             // Is Ladder
-            for(int x: ladder1){
-                if(x == i){
-                    board[i] = new Square(true,false,i, ladder2.get(i));
+            for(int j = 0; j < ladder1.size(); j++){
+                if(i == (ladder1.get(j))){
+                    board[i] = new Square(true,false,i, ladder2.get(j));
+                    numb = 1;
                 }
             }
             // Is Snake
-            for(int x: snake1){
-                if(x == i){
-                    board[i] = new Square(false,true,i, snake2.get(i));
+            for(int j = 0; j < snake1.size(); j++){
+                if(snake1.get(j) == i){
+                    board[i] = new Square(false,true,i, snake2.get(j));
+                    numb = 1;
                 }
             }
+            if(numb == 0){
+                board[i] = new Square(i);
+            }
             // Is Normal Space
-            board[i] = new Square(i);
-        }
-        BFS(0,board);
 
-        return board[boardsize-1].getVisited();
+        }
+        return BFS(0,board,boardsize);
     }
 
-    public static int BFS(int position, Square[] board){
+    public static int BFS(int position, Square[] board, int boardsize){
         // Make Queue
-        Queue<Square> GameSolver = new LinkedList<Square>();
+        Queue<Square> gameSolver = new LinkedList<Square>();
         Square current = board[position];
-        int turns = 0;
-        while(position != 100){
-            //Determine if Turns Resets or Not
-            if(){
-
-            }
-            else{
-
-            }
+        int turns = 1;
+        current.setVisited(1);
+        while(position != boardsize){
             if(current.isLadder){
                 current = board[current.getTransport()];
             }
             if(current.isSnake){
                 current = board[current.getTransport()];
             }
-
             position = current.getNumber();
-            // Need to Determine When to Reset Turns
-            current.setVisited(turns);
+            turns = current.getVisited();
             //Adds Valid Squares to Queue
             for(int i = 1; i < 7; i++){
-                if((position + i) < 100){
-                    if(board[position+i].getVisited() > turns){
-                        GameSolver.add(board[position+i]);
-                    }
+                if((position + i) <= 100 && board[position+i].getVisited() == 0){
+                    gameSolver.add(board[position+i]);
+                    board[position+i].setVisited(turns+1);
                 }
             }
-            current = GameSolver.remove();
+            current = gameSolver.remove();
+            position = current.getNumber();
         }
+        return board[boardsize].getVisited();
     }
-
-
-
-
-
-
-
-
-
-    // Find the Biggest Ladder
-    public int findLargerLadder(int[][] ladders){
-        int largest = 0;
-        int place = 0;
-        for(int i = 0; i < ladders.length; i++){
-            int challenger = 0;
-
-            for(int j = 0; j < ladders[i].length; j++){
-                // Calculate How Much Distance the Latter Covers
-                challenger += j==0 ? ladders[i][j] : -ladders[i][j];
-            }
-            if(challenger > largest){
-                largest = challenger;
-                place = i;
-            }
-        }
-        return place;
-    }
-    // Find the Closest Ladder
-    public int findCloseLadder(int[][] ladders, int position) {
-        int place = 0;
-        boolean bool = true;
-        int counter = 0;
-        while (bool){
-            if (ladders[counter][0] > position) {
-                place = counter;
-                bool = false;
-            }
-            counter++;
-            if(counter > ladders.length){
-                bool = false;
-            }
-        }
-        return place;
-    }
-
-    // Find Distance to Next Ladder
-    public int distanceToLadder(int[][] ladders, int position, int ladder){
-        int distance = ladders[ladder][0] - position;
-        return distance;
-    }
-
-    // Check Distance Covered by Next Ladder
-    public int distance(int[][] ladders, int ladder){
-        int distance = ladders[ladder+1][0] - ladders[ladder][1];
-        return distance;
-    }
-
-    // Check if Space Has Snake
-    public boolean Snake(int[][] snakes, int position){
-        for(int i = 0; i < snakes.length; i++){
-            if(position == snakes[i][0]){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //Returns an Array of Ladders Skipped
-    public int[] skipped(int[][]ladders, int position, int distance){
-        ArrayList<Integer> skipped = new ArrayList<Integer>();
-        for(int i = 0; i < ladders.length; i++){
-            if(ladders[i][0] < position + distance && ladders[i][0] > position){
-                skipped.add(i);
-            }
-        }
-        int[] skips = new int[skipped.size()];
-        for(int i = 0; i < skipped.size(); i++){
-            skips[i] = skipped.get(i);
-        }
-        return skips;
-    }
-
 }
 

@@ -22,6 +22,7 @@ public class Square {
         isSnake = false;
         transport = 0;
         parent = 0;
+        visited = 0;
     }
 
     public int getVisited() {
