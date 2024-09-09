@@ -26,7 +26,7 @@ public class MokshaPatam {
     // 4) Repeat Until End
     public static int fewestMoves(int boardsize, int[][] ladders, int[][] snakes) {
        // Set Up Board
-        int position = 0;
+        int position = 1;
         // ArrayList of All Snake Locations
         ArrayList<Integer> snake1 = new ArrayList<Integer>();
         //ArrayList of All Snake Destinations
@@ -63,39 +63,51 @@ public class MokshaPatam {
                     numb = 1;
                 }
             }
+            // Is Normal Space
             if(numb == 0){
                 board[i] = new Square(i);
             }
-            // Is Normal Space
-
         }
-        return BFS(0,board,boardsize);
+        return BFS(position,board,boardsize);
     }
-
+// Breadth First Search
     public static int BFS(int position, Square[] board, int boardsize){
         // Make Queue
         Queue<Square> gameSolver = new LinkedList<Square>();
         Square current = board[position];
         int turns = 1;
-        current.setVisited(1);
+        current.setVisited(0);
         while(position != boardsize){
+            // Checks if Space is Snake or Ladder, Moves to the Resulting Space
             if(current.isLadder){
+                board[current.getTransport()].setVisited(current.getVisited());
                 current = board[current.getTransport()];
             }
             if(current.isSnake){
+                board[current.getTransport()].setVisited(current.getVisited());
                 current = board[current.getTransport()];
             }
+            // Sets Position and Turns to the Current one
             position = current.getNumber();
             turns = current.getVisited();
             //Adds Valid Squares to Queue
             for(int i = 1; i < 7; i++){
-                if((position + i) <= 100 && board[position+i].getVisited() == 0){
+                if((position + i) <= boardsize && board[position+i].getVisited() == 0){
                     gameSolver.add(board[position+i]);
                     board[position+i].setVisited(turns+1);
                 }
             }
+            // If Code Goes Through The Entire Board Return -1
+            if(gameSolver.isEmpty()){
+                return -1;
+            }
             current = gameSolver.remove();
             position = current.getNumber();
+            System.out.println(current.getNumber());
+            // Return Answer
+            if(position == boardsize){
+                return board[boardsize].getVisited();
+            }
         }
         return board[boardsize].getVisited();
     }

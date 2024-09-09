@@ -7,7 +7,8 @@ Name: YOUR NAME HERE
 | September 2 | 9:20 - 9:40  |                                                                                                                                                                                       I thought about how to find the best path. I also made a couple more functions |
 | September 4 | 3:30 - 4:00  |                                                                                        Reviewed the MazeSolver BFS to get ideas. Started by initializing a board of a new class I made. I now need to figure out how to keep track of turn when I reach each square. |
 | September 4 | 4:00  - 4:20 |                                                                                                                                                                                    I just need to determine how to figure out what turn it is when I reach a square. |
-| September 6 |  3:40-4:00   |                                                                                                                                                                                                       Switched the Board, so it starts at 0. Did a lot of debugging. |
+| September 6 |  3:40-4:00   |                                                                                                                                                                                                       Switched the Board, so it starts at 1. Did a lot of debugging. |
+| September 8 | 10:30-11:40  |                                                                                                                                                                                                                                                         Bugfixing :( |
 
 
 To add a new row to the table, click into a cell and then hit shift-enter.
