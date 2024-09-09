@@ -102,7 +102,10 @@ public class MokshaPatam {
             }
             // If Code Goes Through The Entire Board Return -1
             if(gameSolver.isEmpty()){
-                return -1;
+                if(board[boardsize].getVisited() == 0){
+                    return -1;
+                }
+                return board[boardsize].getVisited();
             }
             current = gameSolver.remove();
             position = current.getNumber();
