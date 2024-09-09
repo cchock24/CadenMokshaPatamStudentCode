@@ -95,6 +95,9 @@ public class MokshaPatam {
                 if((position + i) <= boardsize && board[position+i].getVisited() == 0){
                     gameSolver.add(board[position+i]);
                     board[position+i].setVisited(turns+1);
+                    if(board[position+i].getNumber() == boardsize){
+                        return board[position+i].getVisited();
+                    }
                 }
             }
             // If Code Goes Through The Entire Board Return -1
@@ -103,11 +106,6 @@ public class MokshaPatam {
             }
             current = gameSolver.remove();
             position = current.getNumber();
-            System.out.println(current.getNumber());
-            // Return Answer
-            if(position == boardsize){
-                return board[boardsize].getVisited();
-            }
         }
         return board[boardsize].getVisited();
     }
